@@ -132,7 +132,7 @@ Graph* GraphCreateComplete(unsigned int numVertices, int isDigraph) {
 // Create the transpose of a directed graph
 // This function should never be called on an undirected graph
 // This function should never be called on a complete graph
-Graph* GraphCreateTranspose(const Graph* g) {
+Graph* GraphCreateTranspose(const Graph* g) {                 // Eficiência: O(V + E), V = numVertices, E = numEdges
   assert(g != NULL);
   assert(g->isDigraph);
   assert(g->isComplete == 0);
@@ -143,6 +143,22 @@ Graph* GraphCreateTranspose(const Graph* g) {
 
   List* vertices = g->verticesList;
   ListMoveToHead(vertices);
+  
+
+
+  while (!ListEnd(vertices)) {
+    int src = ListGetCurrentKey(vertices); // Vértice de origem
+    List* adjList = GraphGetAdjacencyList(g, src); // Lista de adjacência do vértice
+    ListMoveToHead(adjList);
+
+    // Adiciona arestas invertidas no grafo transposto
+    while (!ListEnd(adjList)) {
+      int dest = ListGetCurrentKey(adjList); // Vértice de destino
+      GraphAddEdge(transpose, dest, src); // Aresta invertida
+      ListMoveToNext(adjList);
+    }
+    ListMoveToNext(vertices);
+  }
 
 
   return transpose;
