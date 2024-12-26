@@ -68,7 +68,7 @@ GraphBellmanFordAlg* GraphBellmanFordAlgExecute(Graph* g,
   
   // THE ALGORTIHM TO BUILD THE SHORTEST-PATHS TREE
 
-  result->marked = (unsigned int*)calloc(numVertices * sizeof(unsigned int));
+  result->marked = (unsigned int*)calloc(numVertices, sizeof(unsigned int));
   assert(result->marked != NULL);
 
   result->distance = (int*)malloc(numVertices * sizeof(int));
