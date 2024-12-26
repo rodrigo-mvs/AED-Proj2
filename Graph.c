@@ -8,8 +8,8 @@
 
 // Student Name :
 // Student Number :
-// Student Name :
-// Student Number :
+// Student Name : Gonçalo Ribau
+// Student Number : 119560
 
 /*** COMPLETE THE GraphCreateTranspose FUNCTION ***/
 
