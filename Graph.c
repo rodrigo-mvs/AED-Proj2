@@ -133,35 +133,30 @@ Graph* GraphCreateComplete(unsigned int numVertices, int isDigraph) {
 // This function should never be called on an undirected graph
 // This function should never be called on a complete graph
 Graph* GraphCreateTranspose(const Graph* g) {                 // Eficiência: O(V + E), V = numVertices, E = numEdges
-  assert(g != NULL);
-  assert(g->isDigraph);
-  assert(g->isComplete == 0);
+    assert(g != NULL);
+    assert(g->isDigraph);
+    assert(g->isComplete == 0);
 
-  // COMPLETE THE CODE
+    Graph* transpose = GraphCreate(g->numVertices, 1, g->isWeighted);
+    assert(transpose != NULL);
 
-  Graph* transpose = GraphCreate(g->numVertices, 1, g->isWeighted);
+    for (unsigned int src = 0; src < GraphGetNumVertices(g); src++) {
+        unsigned int* adjList = GraphGetAdjacentsTo(g, src);
 
-  List* vertices = g->verticesList;
-  ListMoveToHead(vertices);
-  
+        if (adjList != NULL) {
+            // The first element of adjList contains the count of adjacent vertices
+            unsigned int adjListSize = adjList[0];
 
+            for (unsigned int i = 1; i <= adjListSize; i++) { // Process from index 1
+                unsigned int dest = adjList[i];
+                GraphAddEdge(transpose, dest, src); // Add inverted edge
+            }
 
-  while (!ListEnd(vertices)) {
-    int src = ListGetCurrentKey(vertices); // Vértice de origem
-    List* adjList = GraphGetAdjacencyList(g, src); // Lista de adjacência do vértice
-    ListMoveToHead(adjList);
-
-    // Adiciona arestas invertidas no grafo transposto
-    while (!ListEnd(adjList)) {
-      int dest = ListGetCurrentKey(adjList); // Vértice de destino
-      GraphAddEdge(transpose, dest, src); // Aresta invertida
-      ListMoveToNext(adjList);
+            free(adjList); // Free the dynamically allocated array
+        }
     }
-    ListMoveToNext(vertices);
-  }
 
-
-  return transpose;
+    return transpose;
 }
 
 void GraphDestroy(Graph** p) {
