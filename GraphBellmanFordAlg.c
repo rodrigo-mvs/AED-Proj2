@@ -49,6 +49,8 @@ GraphBellmanFordAlg* GraphBellmanFordAlgExecute(Graph* g,
 
   unsigned int numVertices = GraphGetNumVertices(g);
 
+  
+
   //
   // TO BE COMPLETED !!
   //
@@ -65,6 +67,35 @@ GraphBellmanFordAlg* GraphBellmanFordAlgExecute(Graph* g,
   // No vertex has (yet) a (valid) distance to the start vertex
   
   // THE ALGORTIHM TO BUILD THE SHORTEST-PATHS TREE
+
+  result->marked = (unsigned int*)calloc(numVertices * sizeof(unsigned int));
+  assert(result->marked != NULL);
+
+  result->distance = (int*)malloc(numVertices * sizeof(int));
+  assert(result->distance != NULL);
+
+  result->predecessor = (int*)malloc(numVertices * sizeof(int));
+  assert(result->predecessor != NULL);
+
+
+  // Step 1 : Initialize graph
+  for (unsigned int i = 0; i < numVertices; i++) {
+    result->distance[i] = -1;
+    result->predecessor[i] = -1;
+  }
+
+  // The distance from the source to itself is zero
+  result->distance[startVertex] = 0;
+
+
+  // Step 2 : Relax edges repeatedly
+  for (unsigned int u=0; u< numVertices; u++) {
+    
+    
+
+    
+    
+  }
 
   return NULL;
 }
