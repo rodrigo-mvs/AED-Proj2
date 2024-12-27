@@ -6,8 +6,8 @@
 // GraphBellmanFord - Bellman-Ford Algorithm
 //
 
-// Student Name :
-// Student Number :
+// Student Name : Gonçalo Ribau
+// Student Number : 119560
 // Student Name :
 // Student Number :
 
@@ -77,27 +77,53 @@ GraphBellmanFordAlg* GraphBellmanFordAlgExecute(Graph* g,
   result->predecessor = (int*)malloc(numVertices * sizeof(int));
   assert(result->predecessor != NULL);
 
-
   // Step 1 : Initialize graph
   for (unsigned int i = 0; i < numVertices; i++) {
+    result->marked[i] = 0;
     result->distance[i] = -1;
     result->predecessor[i] = -1;
   }
 
-  // The distance from the source to itself is zero
+  // The distance on the source is 0
   result->distance[startVertex] = 0;
+  result->marked[startVertex] = 1;
 
 
   // Step 2 : Relax edges repeatedly
-  for (unsigned int u=0; u< numVertices; u++) {
-    
-    
+  // Relax all edges |V|-1 times
+  for (unsigned int i = 0; i < numVertices - 1; i++) {
+    // For each edge
+    for (unsigned int v = 0; v < numVertices; v++) {
 
-    
-    
+      if (result->marked[v] == 0) {
+        continue;
+      }
+
+      unsigned int* adjacents = GraphGetAdjacentsTo(g, v);  // Get adjacent vertices for edge e
+
+      if (adjacents == NULL) {
+        fprintf(stderr, "Error: adjacents is NULL for edge %u\n", v);
+        exit(EXIT_FAILURE);
+      }
+
+      // For each adjacent vertex, try relaxing the edge
+      for (unsigned int j = 1; j <= adjacents[0]; j++) {
+        unsigned int adj = adjacents[j];  // Adjacent vertex
+
+        // Relaxation condition: if the distance to the adjacent vertex can be reduced
+        if (result->distance[adj] == -1 || result->distance[v] + 1 < result->distance[adj]) {
+          result->marked[adj] = 1;
+          result->distance[adj] = result->distance[v] + 1;  // Relax edge
+          result->predecessor[adj] = v;  // Set predecessor for path reconstruction
+        }
+      }
+      free(adjacents);
+    }
   }
 
-  return NULL;
+  // Step 3: Negative cycle detection is skipped since the graph is unweighted (no negative weights)
+  
+  return result;
 }
 
 void GraphBellmanFordAlgDestroy(GraphBellmanFordAlg** p) {
@@ -189,3 +215,88 @@ void GraphBellmanFordAlgDisplayDOT(const GraphBellmanFordAlg* p) {
   // Housekeeping
   GraphDestroy(&paths_tree);
 }
+
+
+// GraphAllPairsShortestDistances* result = (GraphAllPairsShortestDistances*)malloc(sizeof(GraphAllPairsShortestDistances));
+//   if (result == NULL) {
+//     perror("Failed to allocate memory for result structure");
+//     exit(EXIT_FAILURE);
+//   }
+
+
+//   // variables
+//   unsigned int vertices = GraphGetNumVertices(g); // get the number of vertices in the graph
+
+//   result->distance = (int**)malloc(vertices * sizeof(int*));
+//   if (result->distance == NULL) {
+//     perror("Memory allocation for distance matrix failed");
+//     exit(EXIT_FAILURE);
+//   }
+  
+//   // For each row 
+//   for (unsigned int i = 0; i < vertices; i++) {
+//     result->distance[i] = (int*)malloc(vertices * sizeof(int));
+//     if (result->distance[i] == NULL) {
+//       perror("Memory allocation for row in distance matrix failed");
+//       exit(EXIT_FAILURE);
+//     }
+
+//     for (unsigned int j = 0; j < vertices; j++) {
+//       result->distance[i][j] = -1;  // Initialize to -1 (infinity)
+//     }
+//   }
+  
+//   // Using Bellman-Ford to calculate the shortest paths
+//   for (unsigned int source = 0; source < vertices; source++) {
+//     // Arrays to store the result->distance and predecessors for the current source
+//     int* distance = (int*)malloc(vertices * sizeof(int));
+//     int* predecessor = (int*)malloc(vertices * sizeof(int));
+
+//     // Step 1: Initialize distances and predecessors
+//     for (unsigned int v = 0; v < vertices; v++) {
+//       distance[v] = -1;  // Distance is infinity initially
+//       predecessor[v] = -1;  // No predecessor initially
+//     }
+//     distance[source] = 0;  // Distance to the source is 0
+
+//     // Step 2: relax edges repeatedly
+//     unsigned int numEdges = GraphGetNumEdges(g); // Get the number of edges in the graph
+
+//     // repeat |V|−1 times
+//     for (unsigned int i = 0; i < vertices - 1; i++) { 
+
+//       // For each edge
+//       for (unsigned int e = 0; e < numEdges; e++) {
+//         unsigned int* adjacents = GraphGetAdjacentsTo(g, e); // get adjacent edges
+
+//         if (adjacents == NULL) {
+//           fprintf(stderr, "Error: adjacents is NULL for edge %u\n", e);
+//           exit(EXIT_FAILURE);
+//         }
+//         // Run every adjacent
+//         for (unsigned int j = 0; adjacents[j] != (unsigned int)-1; j++) { 
+//           unsigned int adj = adjacents[j];  // Adjacent
+          
+//           if (distance[e] != -1 && distance[e] + 1 < distance[adj]) {
+//             distance[adj] = distance[e] + 1;  // Update of the distance
+//             predecessor[adj] = e; // Predecessor to the adjacent
+//           }
+//         }
+//       }
+//     }
+
+//     // Step 3: Check for negative-weight cycles
+//     // (this step is skipped because the vertices are weightless)
+
+//     // Store the computed distances for the current source vertex
+//     for (unsigned int v = 0; v < vertices; v++) {
+//       result->distance[source][v] = distance[v];
+//     }
+
+//     // Free arrays
+    
+//     free(distance);
+//     free(predecessor);
+//   }
+
+//   result->graph = g;
