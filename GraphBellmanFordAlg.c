@@ -39,6 +39,8 @@ GraphBellmanFordAlg* GraphBellmanFordAlgExecute(Graph* g,
   assert(startVertex < GraphGetNumVertices(g));
   assert(GraphIsWeighted(g) == 0);
 
+  unsigned int numVertices = GraphGetNumVertices(g); // Get the number of vertices in the given graph 
+
   GraphBellmanFordAlg* result =
       (GraphBellmanFordAlg*)malloc(sizeof(struct _GraphBellmanFordAlg));
   assert(result != NULL);
@@ -46,10 +48,6 @@ GraphBellmanFordAlg* GraphBellmanFordAlgExecute(Graph* g,
   // Given graph and start vertex for the shortest-paths
   result->graph = g;
   result->startVertex = startVertex;
-
-  unsigned int numVertices = GraphGetNumVertices(g);
-
-  
 
   //
   // TO BE COMPLETED !!
@@ -99,7 +97,7 @@ GraphBellmanFordAlg* GraphBellmanFordAlgExecute(Graph* g,
         continue;
       }
 
-      unsigned int* adjacents = GraphGetAdjacentsTo(g, v);  // Get adjacent vertices for edge e
+      unsigned int* adjacents = GraphGetAdjacentsTo(g, v);  // Get adjacent vertices for edge v
 
       if (adjacents == NULL) {
         fprintf(stderr, "Error: adjacents is NULL for edge %u\n", v);
