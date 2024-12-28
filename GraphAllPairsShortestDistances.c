@@ -42,12 +42,17 @@ GraphAllPairsShortestDistances* GraphAllPairsShortestDistancesExecute(
 
   // Allocatio of memory for the new temporary Graph struct we will use
   GraphAllPairsShortestDistances* apsdresult = (GraphAllPairsShortestDistances*)malloc(sizeof(GraphAllPairsShortestDistances)); // Graph
+  assert(apsdresult != NULL);
 
   // Allocation of memory for the distance 2D array
   apsdresult->distance = (int**)malloc(numVertices * sizeof(int*));
+  assert(apsdresult->distance != NULL);
+
   // Allocation for each row individually
   for (unsigned int i = 0; i < numVertices; i++) {
     apsdresult->distance[i] = (int*)malloc(numVertices * sizeof(int));
+    assert(apsdresult->distance[i] != NULL);
+
     // Setting the initial value for each element
     for (unsigned int j = 0; j < numVertices; j++) {
       apsdresult->distance[i][j] = -1; // Initially the value is not defined (infinite or "-1" in this case)

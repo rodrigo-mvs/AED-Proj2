@@ -133,30 +133,30 @@ Graph* GraphCreateComplete(unsigned int numVertices, int isDigraph) {
 // This function should never be called on an undirected graph
 // This function should never be called on a complete graph
 Graph* GraphCreateTranspose(const Graph* g) {                 // Eficiência: O(V + E), V = numVertices, E = numEdges
-    assert(g != NULL);
-    assert(g->isDigraph);
-    assert(g->isComplete == 0);
+  assert(g != NULL);
+  assert(g->isDigraph);
+  assert(g->isComplete == 0);
 
-    Graph* transpose = GraphCreate(g->numVertices, 1, g->isWeighted);
-    assert(transpose != NULL);
+  Graph* transpose = GraphCreate(g->numVertices, 1, g->isWeighted);
+  assert(transpose != NULL);
 
-    for (unsigned int src = 0; src < GraphGetNumVertices(g); src++) {
-        unsigned int* adjList = GraphGetAdjacentsTo(g, src);
+  for (unsigned int src = 0; src < GraphGetNumVertices(g); src++) {
+    unsigned int* adjList = GraphGetAdjacentsTo(g, src);
 
-        if (adjList != NULL) {
-            // The first element of adjList contains the count of adjacent vertices
-            unsigned int adjListSize = adjList[0];
+    if (adjList != NULL) {
+      // The first element of adjList contains the count of adjacent vertices
+      unsigned int adjListSize = adjList[0];
 
-            for (unsigned int i = 1; i <= adjListSize; i++) { // Process from index 1
-                unsigned int dest = adjList[i];
-                GraphAddEdge(transpose, dest, src); // Add inverted edge
-            }
+      for (unsigned int i = 1; i <= adjListSize; i++) { // Process from index 1
+        unsigned int dest = adjList[i];
+        GraphAddEdge(transpose, dest, src); // Add inverted edge
+      }
 
-            free(adjList); // Free the dynamically allocated array
-        }
+      free(adjList); // Free the dynamically allocated array
     }
+  }
 
-    return transpose;
+  return transpose;
 }
 
 void GraphDestroy(Graph** p) {

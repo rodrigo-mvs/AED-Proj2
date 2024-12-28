@@ -56,6 +56,7 @@ GraphEccentricityMeasures* GraphEccentricityMeasuresCompute(Graph* g) {
 
   // Allocate memory for the struct
   GraphEccentricityMeasures* emresult = (GraphEccentricityMeasures*)malloc(sizeof(GraphEccentricityMeasures));
+  assert(emresult != NULL);
 
   // Save the given graph on the struct
   emresult->graph = g;
@@ -66,6 +67,7 @@ GraphEccentricityMeasures* GraphEccentricityMeasuresCompute(Graph* g) {
 
   // Allocate memory for the eccentricity array
   emresult->eccentricity = (int*)malloc(numVertices * sizeof(int));
+  assert(emresult->eccentricity != NULL);
 
   // Get the shortest distances between the vertices 
   GraphAllPairsShortestDistances* distances = GraphAllPairsShortestDistancesExecute(g);
@@ -104,6 +106,7 @@ GraphEccentricityMeasures* GraphEccentricityMeasuresCompute(Graph* g) {
 
   // Allocation of memory for the central vertices array
   emresult->centralVertices = (unsigned int*)malloc((centralCount + 1) * sizeof(unsigned int));
+  assert(emresult->centralVertices != NULL);
   // Number of vertices goes on index 0 of the array
   emresult->centralVertices[0] = centralCount;
 
@@ -165,6 +168,7 @@ unsigned int* GraphGetCentralVertices(const GraphEccentricityMeasures* p) {
   unsigned int centralCount = p->centralVertices[0]; // Store the number of central vertices
   // Allocate memory for an array which will serve as a copy of the centralVertices array
   unsigned int* centralCopy = (unsigned int*)malloc((centralCount + 1) * sizeof(unsigned int));
+  assert(centralCopy != NULL);
 
   // Iterate through the number of central vertices
   for (unsigned int i = 0; i <= centralCount; i++) {
@@ -195,9 +199,10 @@ void GraphEccentricityMeasuresPrint(const GraphEccentricityMeasures* p) {
   }
 
   printf("Number of Central vertices: %u\n", p->centralVertices[0]);
-  printf("Central vertices:\n");
+  printf("Central vertices: ");
   // Cycle through the centralVertices array starting on the element 1
   for (unsigned int i = 1; i <= p->centralVertices[0]; i++) {
-    printf("%u\n", p->centralVertices[i]); // Print each central vertex
+    printf("%u ", p->centralVertices[i]); // Print each central vertex
   }
+  printf("\n");
 }

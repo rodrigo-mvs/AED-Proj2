@@ -41,8 +41,7 @@ GraphBellmanFordAlg* GraphBellmanFordAlgExecute(Graph* g,
 
   unsigned int numVertices = GraphGetNumVertices(g); // Get the number of vertices in the given graph 
 
-  GraphBellmanFordAlg* result =
-      (GraphBellmanFordAlg*)malloc(sizeof(struct _GraphBellmanFordAlg));
+  GraphBellmanFordAlg* result = (GraphBellmanFordAlg*)malloc(sizeof(struct _GraphBellmanFordAlg));
   assert(result != NULL);
 
   // Given graph and start vertex for the shortest-paths
