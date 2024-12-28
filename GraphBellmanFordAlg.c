@@ -6,10 +6,10 @@
 // GraphBellmanFord - Bellman-Ford Algorithm
 //
 
+// Student Name : Rodrigo Santos
+// Student Number : 119198
 // Student Name : Gonçalo Ribau
 // Student Number : 119560
-// Student Name :
-// Student Number :
 
 /*** COMPLETE THE GraphBellmanFordAlgExecute FUNCTION ***/
 

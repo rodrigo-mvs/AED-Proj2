@@ -6,10 +6,10 @@
 // GraphTransitiveClosure - Transitive Closure of a directed graph
 //
 
+// Student Name : Rodrigo Santos
+// Student Number : 119198
 // Student Name : Gonçalo Ribau
 // Student Number : 119560
-// Student Name :
-// Student Number :
 
 /*** COMPLETE THE GraphComputeTransitiveClosure FUNCTION ***/
 
@@ -50,7 +50,7 @@ Graph* GraphComputeTransitiveClosure(Graph* g) {
       GraphAddEdge(tcresult, u, v); // Add the respective edge to the Transitive Closer Graph
     }
 
-    // Destroy the temporary Belman-Ford graph to free up memory
+    // Destroy the temporary struct to improve memory efficiency
     GraphBellmanFordAlgDestroy(&bfresult);
   }
 

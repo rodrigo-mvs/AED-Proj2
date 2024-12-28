@@ -6,10 +6,10 @@
 // GraphAllPairsShortestDistances
 //
 
-// Student Name :
-// Student Number :
-// Student Name :
-// Student Number :
+// Student Name : Rodrigo Santos
+// Student Number : 119198
+// Student Name : Gonçalo Ribau
+// Student Number : 119560
 
 /*** COMPLETE THE GraphAllPairsShortestDistancesExecute FUNCTION ***/
 
@@ -37,7 +37,40 @@ GraphAllPairsShortestDistances* GraphAllPairsShortestDistancesExecute(
 
   // COMPLETE THE CODE
 
-  return NULL;
+  // Get the number of vertices of the given Graph
+  unsigned int numVertices = GraphGetNumVertices(g);
+
+  // Allocatio of memory for the new temporary Graph struct we will use
+  GraphAllPairsShortestDistances* apsdresult = (GraphAllPairsShortestDistances*)malloc(sizeof(GraphAllPairsShortestDistances)); // Graph
+
+  // Allocation of memory for the distance 2D array
+  apsdresult->distance = (int**)malloc(numVertices * sizeof(int*));
+  // Allocation for each row individually
+  for (unsigned int i = 0; i < numVertices; i++) {
+    apsdresult->distance[i] = (int*)malloc(numVertices * sizeof(int));
+    // Setting the initial value for each element
+    for (unsigned int j = 0; j < numVertices; j++) {
+      apsdresult->distance[i][j] = -1; // Initially the value is not defined (infinite or "-1" in this case)
+    }
+  }
+
+  // Store the graph
+  apsdresult->graph = g;
+
+  // Iterate through all the graph's vertices
+  for (unsigned int u = 0; u < numVertices; u++) {
+    GraphBellmanFordAlg* bfgraph = GraphBellmanFordAlgExecute(g, u); // Do the Belman-Ford algorythm for the first vertice to find paths
+    // Iterate again through the vertices to check the pairs
+    for (unsigned int v = 0; v < numVertices; v++) {
+      if (GraphBellmanFordAlgPathTo(bfgraph, v)) {
+        apsdresult->distance[u][v] = GraphBellmanFordAlgDistance(bfgraph, v);
+      }
+    }
+    // Destroy the temporary struct to improve memory efficiency
+    GraphBellmanFordAlgDestroy(&bfgraph);
+  }
+
+  return apsdresult;
 }
 
 void GraphAllPairsShortestDistancesDestroy(GraphAllPairsShortestDistances** p) {
