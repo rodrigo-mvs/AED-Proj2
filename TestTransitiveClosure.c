@@ -9,9 +9,15 @@
 #include <assert.h>
 
 #include "Graph.h"
+#include "GraphBellmanFordAlg.h"
 #include "GraphTransitiveClosure.h"
+#include "instrumentation.h"
 
 int main(void) {
+  // Initialize Counters
+  GraphBFInit();
+  GraphTCInit();
+
   // What kind of graph is dig01?
   Graph* dig01 = GraphCreate(6, 1, 0);
   GraphAddEdge(dig01, 1, 2);

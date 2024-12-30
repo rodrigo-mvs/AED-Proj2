@@ -23,6 +23,16 @@
 #include "GraphBellmanFordAlg.h"
 #include "instrumentation.h"
 
+void GraphTCInit(void) {  ///
+  InstrCalibrate();
+  InstrName[3] = "bf_invocation_counter"; 
+  InstrName[4] = "edge_addition_counter";
+}
+
+#define BF_INVOCATION_COUNTER InstrCount[3]
+#define EDGE_ADDITION_COUNTER InstrCount[4]
+
+
 // Compute the transitive closure of a directed graph
 // Return the computed transitive closure as a directed graph
 // Use the Bellman-Ford algorithm
@@ -42,12 +52,15 @@ Graph* GraphComputeTransitiveClosure(Graph* g) {
   for (unsigned int u = 0; u < numVertices; u++) {
     // Run Bellman-Ford on the given graph with u as strating point
     GraphBellmanFordAlg* bfresult = GraphBellmanFordAlgExecute(g, u); // This checks which vertices are connected to u
+    BF_INVOCATION_COUNTER++;// count how many times the Bellman-Ford module is called
 
     // Cycle through all the available vertices once more
     for (unsigned int v = 0; v < numVertices; v++) {
-      if (u != v && GraphBellmanFordAlgReached(bfresult, v)) // If we are able to get path information on this vertix
+      if (u != v && GraphBellmanFordAlgReached(bfresult, v)) { // If we are able to get path information on this vertix
 
-      GraphAddEdge(tcresult, u, v); // Add the respective edge to the Transitive Closer Graph
+        EDGE_ADDITION_COUNTER++; // Count how many times an edge is added to the graph
+        GraphAddEdge(tcresult, u, v); // Add the respective edge to the Transitive Closer Graph
+      }
     }
 
     // Destroy the temporary struct to improve memory efficiency

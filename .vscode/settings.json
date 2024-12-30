@@ -1,5 +1,7 @@
 {
     "files.associations": {
-        "cstdlib": "c"
+        "cstdlib": "c",
+        "instrumentation.h": "c",
+        "graphbellmanfordalg.h": "c"
     }
 }

@@ -13,4 +13,6 @@
 
 Graph* GraphComputeTransitiveClosure(Graph* g);
 
+void GraphTCInit(void); // Initialize counters
+
 #endif  // _GRAPH_TRANSITIVE_CLOSURE_

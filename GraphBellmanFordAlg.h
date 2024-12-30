@@ -14,6 +14,8 @@
 
 typedef struct _GraphBellmanFordAlg GraphBellmanFordAlg;
 
+void GraphBFInit(void);
+
 GraphBellmanFordAlg* GraphBellmanFordAlgExecute(Graph* g,
                                                 unsigned int startVertex);
 
