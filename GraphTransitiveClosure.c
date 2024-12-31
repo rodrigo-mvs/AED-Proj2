@@ -62,7 +62,6 @@ Graph* GraphComputeTransitiveClosure(Graph* g) {
         GraphAddEdge(tcresult, u, v); // Add the respective edge to the Transitive Closer Graph
       }
     }
-
     // Destroy the temporary struct to improve memory efficiency
     GraphBellmanFordAlgDestroy(&bfresult);
   }

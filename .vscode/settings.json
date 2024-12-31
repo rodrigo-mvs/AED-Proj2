@@ -2,6 +2,7 @@
     "files.associations": {
         "cstdlib": "c",
         "instrumentation.h": "c",
-        "graphbellmanfordalg.h": "c"
+        "graphbellmanfordalg.h": "c",
+        "graph.h": "c"
     }
 }

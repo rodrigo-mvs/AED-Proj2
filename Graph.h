@@ -11,6 +11,8 @@
 
 #include <stdio.h>
 
+void GraphInit(void);
+
 typedef struct _GraphHeader Graph;
 
 Graph* GraphCreate(unsigned int numVertices, int isDigraph, int isWeighted);

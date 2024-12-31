@@ -20,6 +20,16 @@
 #include <stdlib.h>
 
 #include "SortedList.h"
+#include "instrumentation.h"
+
+void GraphInit(void) {  ///
+  InstrCalibrate();
+  InstrName[5] = "vertex_allocation_counter"; 
+  InstrName[6] = "adj_ifexist_counter";
+}
+
+#define VERTEX_ALLOCATION_COUNTER InstrCount[5]
+#define ADJ_IFEXIST_COUNTER InstrCount[6]
 
 struct _Vertex {
   unsigned int id;
@@ -74,6 +84,8 @@ Graph* GraphCreate(unsigned int numVertices, int isDigraph, int isWeighted) {
   g->verticesList = ListCreate(graphVerticesComparator);
 
   for (unsigned int i = 0; i < numVertices; i++) {
+    VERTEX_ALLOCATION_COUNTER++; // Count the number of iterations of this loop
+    
     struct _Vertex* v = (struct _Vertex*)malloc(sizeof(struct _Vertex));
     if (v == NULL) abort();
 
@@ -312,6 +324,8 @@ unsigned int* GraphGetAdjacentsTo(const Graph* g, unsigned int v) {
     List* adjList = vPointer->edgesList;
     ListMoveToHead(adjList);
     for (unsigned int i = 0; i < numAdjVertices; ListMoveToNext(adjList), i++) {
+      ADJ_IFEXIST_COUNTER++; // Counter para contar o número de iterações deste loop
+
       struct _Edge* ePointer = ListGetCurrentItem(adjList);
       adjacent[i + 1] = ePointer->adjVertex;
     }
