@@ -46,12 +46,24 @@ GraphAllPairsShortestDistances* GraphAllPairsShortestDistancesExecute(
 
   // Allocation of memory for the distance 2D array
   apsdresult->distance = (int**)malloc(numVertices * sizeof(int*));
-  assert(apsdresult->distance != NULL);
+  if (apsdresult->distance == NULL) {
+    free(apsdresult); // Cleanup
+    return NULL;
+  }
 
   // Allocation for each row individually
   for (unsigned int i = 0; i < numVertices; i++) {
     apsdresult->distance[i] = (int*)malloc(numVertices * sizeof(int));
-    assert(apsdresult->distance[i] != NULL);
+
+    if (apsdresult->distance[i] == NULL) {
+      // Free all previously allocated rows
+      for (unsigned int j = 0; j < i; j++) {
+        free(apsdresult->distance[j]);
+      }
+      free(apsdresult->distance);
+      free(apsdresult);
+      return NULL; // Return on failure
+    }
 
     // Setting the initial value for each element
     for (unsigned int j = 0; j < numVertices; j++) {
@@ -61,15 +73,20 @@ GraphAllPairsShortestDistances* GraphAllPairsShortestDistancesExecute(
 
   // Store the graph
   apsdresult->graph = g;
-
+  GraphBellmanFordAlg* bfgraph = NULL;
+  
   // Iterate through all the graph's vertices
   for (unsigned int u = 0; u < numVertices; u++) {
-    GraphBellmanFordAlg* bfgraph = GraphBellmanFordAlgExecute(g, u); // Do the Belman-Ford algorythm for the first vertice to find paths
+    bfgraph = GraphBellmanFordAlgExecute(g, u); // Do the Belman-Ford algorythm for the first vertice to find paths
+
+    if (bfgraph == NULL) {
+      // Cleanup all memory and return NULL
+      GraphAllPairsShortestDistancesDestroy(&apsdresult);
+      return NULL;
+    }
     // Iterate again through the vertices to check the pairs
     for (unsigned int v = 0; v < numVertices; v++) {
-      if (GraphBellmanFordAlgPathTo(bfgraph, v)) {
-        apsdresult->distance[u][v] = GraphBellmanFordAlgDistance(bfgraph, v);
-      }
+      apsdresult->distance[u][v] = GraphBellmanFordAlgDistance(bfgraph, v);
     }
     // Destroy the temporary struct to improve memory efficiency
     GraphBellmanFordAlgDestroy(&bfgraph);

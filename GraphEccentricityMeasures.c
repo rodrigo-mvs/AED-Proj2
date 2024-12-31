@@ -67,10 +67,18 @@ GraphEccentricityMeasures* GraphEccentricityMeasuresCompute(Graph* g) {
 
   // Allocate memory for the eccentricity array
   emresult->eccentricity = (int*)malloc(numVertices * sizeof(int));
-  assert(emresult->eccentricity != NULL);
+  if (emresult->eccentricity == NULL) {
+    free(emresult); // Cleanup
+    return NULL;
+  }
 
   // Get the shortest distances between the vertices 
   GraphAllPairsShortestDistances* distances = GraphAllPairsShortestDistancesExecute(g);
+  if (distances == NULL) {
+    free(emresult->eccentricity);
+    free(emresult);
+    return NULL;
+  }
 
   // First iteration through the vertices
   for (unsigned int v = 0; v < numVertices; v++) {
@@ -106,7 +114,13 @@ GraphEccentricityMeasures* GraphEccentricityMeasuresCompute(Graph* g) {
 
   // Allocation of memory for the central vertices array
   emresult->centralVertices = (unsigned int*)malloc((centralCount + 1) * sizeof(unsigned int));
-  assert(emresult->centralVertices != NULL);
+  if (emresult->centralVertices == NULL) {
+    // Cleanup on failure
+    free(emresult->eccentricity);
+    GraphAllPairsShortestDistancesDestroy(&distances);
+    free(emresult);
+    return NULL;
+  }
   // Number of vertices goes on index 0 of the array
   emresult->centralVertices[0] = centralCount;
 
