@@ -56,9 +56,11 @@ Graph* GraphComputeTransitiveClosure(Graph* g) {
 
     // Cycle through all the available vertices once more
     for (unsigned int v = 0; v < numVertices; v++) {
+      EDGE_ADDITION_COUNTER++; // Count how many times an edge is added to the graph (assuming the following condition is always true)
+      // The loop runs anyway so we put the counter here
+
       if (u != v && GraphBellmanFordAlgReached(bfresult, v)) { // If we are able to get path information on this vertix
 
-        EDGE_ADDITION_COUNTER++; // Count how many times an edge is added to the graph
         GraphAddEdge(tcresult, u, v); // Add the respective edge to the Transitive Closer Graph
       }
     }

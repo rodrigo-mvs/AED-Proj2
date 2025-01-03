@@ -3,6 +3,10 @@
         "cstdlib": "c",
         "instrumentation.h": "c",
         "graphbellmanfordalg.h": "c",
-        "graph.h": "c"
+        "graph.h": "c",
+        "stdio.h": "c",
+        "time.h": "c",
+        "assert.h": "c",
+        "graphtransitiveclosure.h": "c"
     }
 }

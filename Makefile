@@ -6,9 +6,14 @@
 CFLAGS += -g -Wall -Wextra
 
 TARGETS = TestAllPairsShortestDistances TestBellmanFordAlg \
- TestCreateTranspose TestEccentricityMeasures TestTransitiveClosure
+ TestCreateTranspose TestEccentricityMeasures TestTransitiveClosure \
+ TestSimulationBFTC # utilizado apenas na simulação
 
 all: $(TARGETS)
+
+# Para compilar a simulação (peço desculpa stor mas n queria tar sempre a copiar e colar)
+TestSimulationBFTC: TestSimulationBFTC.o Graph.o GraphBellmanFordAlg.o \
+ GraphTransitiveClosure.o IntegersStack.o SortedList.o instrumentation.o
 
 TestAllPairsShortestDistances: TestAllPairsShortestDistances.o Graph.o GraphBellmanFordAlg.o \
  GraphAllPairsShortestDistances.o IntegersStack.o SortedList.o instrumentation.o
@@ -47,6 +52,10 @@ IntegersStack.o: IntegersStack.c IntegersStack.h instrumentation.h
 SortedList.o: SortedList.c SortedList.h instrumentation.h
 
 instrumentation.o: instrumentation.c instrumentation.h
+
+# para a simulação do relatório
+TestSimulationBFTC.o: TestSimulationBFTC.c Graph.h GraphBellmanFordAlg.h \
+ GraphTransitiveClosure.h instrumentation.h
 
 TestAllPairsShortestDistances.o: TestAllPairsShortestDistances.c Graph.h \
  GraphAllPairsShortestDistances.h GraphBellmanFordAlg.h instrumentation.h
